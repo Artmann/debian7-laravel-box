@@ -35,6 +35,21 @@ service { 'apache2':
   require     => Package['apache2'],
 }
 
+file { '/etc/apache2/sites-enabled/000-default':
+  ensure  => absent,
+  require => Package['apache2'],
+  notify  => Service['apache2'],
+}
+
+file { 'vhosts':
+  ensure  => present,
+  path    => '/etc/apache2/sites-enabled/vhosts',
+  source  => '/vagrant/vhosts',
+  require => Package['apache2'],
+  notify  => Service['apache2'],
+}
+  
+
 ## Laravel Specific
 
 exec {'composer': 
